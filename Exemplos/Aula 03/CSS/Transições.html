@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html lang="pt-br">
+<head>
+<meta name="description" content="Transições">
+<meta charset="utf-8" />
+<title>Transição</title>
+<style id="jsbin-css">
+	#conteudo {
+		width: 50px;
+		height: 50px;
+		background: #ccc;
+		border: 2px solid #000;
+	}
+	
+	#conteudo:hover{
+		width: 200px;
+		transition: 0.5s width;
+	}
+	
+	/* ========= */
+	
+	nav{
+		width: 150px;
+		height: 40px;
+		transition: 2s height;
+		overflow: hidden;
+	}
+	
+	nav:hover{
+		height: 200px;
+		transition: 2s height;	
+	}
+	
+	h1{
+		font: 16px Tahoma;
+		cursor: pointer;
+	}
+	
+	ul{
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+	li {
+		width: 100px;
+		padding: 10px 10px;
+		background: #999;
+		font: 14px Tahoma;
+		color: #fff;
+	}
+	
+	li:hover{
+		background: yellow;
+		color: #000;
+		cursor: pointer;
+	}
+	
+	/* ========= */
+	
+	.teste{
+		width: 200px;
+		height: 200px;
+		background: #ccc;
+		border: 10px solid #000;
+		padding: 10px;
+	}
+	
+	.noticia {
+		width: 200px;
+		height: 200px;
+		box-sizing: border-box;
+		background: orange;
+		border: none;
+	}
+	
+	.noticia:hover{
+		border: 10px solid #000;
+		transition: 0.3s border;
+	}
+	
+	/* ========= */
+	
+	.circulo{
+		width: 200px;
+		height: 200px;
+		border-radius: 200px;
+		background: url("logo.jpg");
+	}
+	
+	.interna{
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		border-radius: 200px;
+		opacity: 0.7;
+		transition: 0.5s border;
+	}
+	
+	.interna:hover {
+		box-sizing: border-box;
+		border: 100px solid blue;
+	}
+	
+	.circulo2{
+		width: 200px;
+		height: 200px;
+		border-radius: 200px;
+		background: url("logo.jpg");
+	}
+	
+	.rotacao{
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		border-radius: 200px;
+		background: green;
+		transform-origin: 95% 40%;
+		transition: all 0.3s ease-in-out;
+	}
+	
+	.rotacao:hover {
+		transform: rotate(-110deg);
+	}
+	
+	/* ========= */
+	
+	.circulo3{
+		width: 200px;
+		height: 200px;
+		border-radius: 200px;
+		background: url("logo.jpg");
+	}
+	
+	.surge{
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		border-radius: 200px;
+		box-shadow: inset 0 0 0 10px #333;
+		opacity: 1;
+		transition: all 0.3s ease-in;
+	}
+	
+	.surge:hover {
+		opacity: 0.5;
+		box-shadow: inset 0 0 0 1px;
+	}
+</style>
+</head>
+<body>
+	<div id="conteudo"></div>
+  
+	<div class="noticia"></div>
+	
+	<div class="circulo">
+		<div class="interna"></div>
+	</div>
+	
+	<div class="circulo2">
+		<div class="rotacao"></div>
+	</div>
+	
+	<div class="circulo3">
+		<div class="surge"></div>
+	</div>
+	
+
+	</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Responsivo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    header {
+      background-color: #004488;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+    }
+
+    .box {
+      flex: 1 1 300px;
+      max-width: 400px;
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .img-responsiva {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.2em;
+      }
+
+      .box {
+        background-color: #d0e8ff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Site Responsivo</h1>
+  </header>
+
+ <div class="container">
+    <div class="box">
+      <h2>Exemplo de Notícia</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in dictum orci. Praesent in neque feugiat, lobortis augue eu, luctus nulla. Quisque malesuada porttitor turpis a mollis. Curabitur semper justo nulla. Sed pellentesque massa ante, vel congue risus interdum sed. Suspendisse sodales ac ipsum eu condimentum. Aliquam ornare iaculis neque, at malesuada nisl. Ut dapibus dignissim tellus, vel tincidunt justo accumsan at. Morbi mollis id erat sodales imperdiet. Curabitur consequat ornare dui, ut scelerisque neque cursus ut. Nam vulputate mauris eget ultricies hendrerit. Curabitur eu leo eget lacus gravida accumsan..</p>
+      <img src="logo.jpg" class="img-responsiva">
+    </div>
+    <div class="box">
+      <h2>Exemplo de Notícia</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in dictum orci. Praesent in neque feugiat, lobortis augue eu, luctus nulla. Quisque malesuada porttitor turpis a mollis. Curabitur semper justo nulla. Sed pellentesque massa ante, vel congue risus interdum sed. Suspendisse sodales ac ipsum eu condimentum. Aliquam ornare iaculis neque, at malesuada nisl. Ut dapibus dignissim tellus, vel tincidunt justo accumsan at. Morbi mollis id erat sodales imperdiet. Curabitur consequat ornare dui, ut scelerisque neque cursus ut. Nam vulputate mauris eget ultricies hendrerit. Curabitur eu leo eget lacus gravida accumsan..</p>
+    </div>
+    <div class="box">
+      <h2>Exemplo de Notícia</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in dictum orci. Praesent in neque feugiat, lobortis augue eu, luctus nulla. Quisque malesuada porttitor turpis a mollis. Curabitur semper justo nulla. Sed pellentesque massa ante, vel congue risus interdum sed. Suspendisse sodales ac ipsum eu condimentum. Aliquam ornare iaculis neque, at malesuada nisl. Ut dapibus dignissim tellus, vel tincidunt justo accumsan at. Morbi mollis id erat sodales imperdiet. Curabitur consequat ornare dui, ut scelerisque neque cursus ut. Nam vulputate mauris eget ultricies hendrerit. Curabitur eu leo eget lacus gravida accumsan..</p>
+    </div>
+    <div class="box">
+      <h2>Contato</h2>
+      <p>Email: exemplo@email.com</p>
+    </div>
+  </div>
+</body>
+</html>

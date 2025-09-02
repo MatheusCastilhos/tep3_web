@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2018 by murielfranco (http://jsbin.com/temuriw/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+h1 {
+  /* Parâmetros: deslocamento deslocamento #cor 
+  Deslocamento de sombra (+direita, -esquerda)
+  Deslocamento de sombra (+baixo, -cima)
+  */
+  color: black;
+  text-shadow: 0.1em 0.1em #333
+}
+
+h2 {
+  /* Adição de um novo paramêtro raio do blur=0.05em*/
+  color: black;
+  text-shadow: 0.1em 0.1em 0.05em #333
+}
+
+h3 {
+  color: black;
+  text-shadow: 0 0 0.2em #8F7
+}
+
+div.sombra {
+  height: 150px;
+  width: 300px;
+  -webkit-box-shadow: -15px 7px 20px -4px rgba(0,0,0,0.75);
+  -moz-box-shadow: -15px 7px 20px -4px rgba(0,0,0,0.75);
+  box-shadow: -15px 7px 20px -4px rgba(0,0,0,0.75);
+}
+</style>
+</head>
+<body>
+  
+  <h1>Texto com sombra simples</h1>
+  <h2>Texto com sombra (efeito blur)</h2>
+  <h3>Texto com efeito neon</h3>
+  <div class="sombra">Div com sombra</div>
+ 
+</body>
+</html>
