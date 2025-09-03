@@ -1,0 +1,147 @@
+/* UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE - UFCSPA
+
+Nome: Matheus Castilhos
+Disciplina: Tópicos Especiais de Programação III
+Curso: Informática Biomédica
+Atividade Prática 1
+*/
+* { 
+  box-sizing: border-box; 
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #142033;
+  background: linear-gradient(to bottom, #f6f8fb, #c3d5f8);
+}
+
+/* Cabeçalho */
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  border-bottom: 2px solid #dbe3ee;
+  background: #fff;
+}
+
+.titulo .icone {width: 60px; height: auto;}
+.titulo .textos {display: flex; flex-direction: column;}
+.titulo h1 {margin: 0; font-size: 24px;}
+.titulo .subtitulo {margin: 0; font-size: 18px; color: #444;}
+
+/* Conteúdo Principal */
+.conteudo {
+  width: 100%;
+  margin: 24px 0;
+  padding: 0 40px;
+}
+
+.layout {display: flex; gap: 20px; align-items: flex-start; margin-top: 24px;}
+.coluna-esquerda {flex: 1; display: flex; flex-direction: column; gap: 20px;}
+.coluna-direita {flex: 2; display: flex; flex-direction: column; gap: 20px;}
+
+/* Apresentação */
+.apresentacao {
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+}
+
+.apresentacao h2 {margin: 0 0 20px 0; font-size: 24px;}
+.apresentacao p {margin: 10px 0;}
+
+/* Formulários */
+.formulario {
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+}
+
+.formulario h2 {margin: 0 0 12px 0; font-size: 24px;}
+
+/* Grupos */
+.grupo {
+  margin-bottom: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+label {font-weight: 600;}
+
+/* Campos */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"] {
+  padding: 10px 12px;
+  border: 1px solid #dbe3ee;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+select {
+  padding: 10px 12px;
+  border: 1px solid #dbe3ee;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+textarea {
+  padding: 10px 12px;
+  border: 1px solid #dbe3ee;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.linha {display: flex; gap: 20px;}
+.linha .grupo, .linha fieldset {flex: 1; min-width: 200px;}
+
+/* focus */
+input:focus,
+select:focus,
+textarea:focus,
+.btn:focus {
+  outline: 2px solid rgba(20,86,163,0.25);
+  border-color: #1456a3;
+}
+
+/* Botões */
+.btn {
+  background: #1456a3;
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.btn:hover {filter: brightness(1.05);}
+
+/* Rodapé */
+.rodape {
+  text-align: center;
+  color: #5b6778;
+  padding: 24px 0 40px;
+}
+
+
+/* Responsividade */
+@media (max-width: 800px) {
+    body{font-size: 14px;}
+    .layout {flex-direction: column;}
+}
+
+@media (max-width: 600px) {
+  .titulo .icone {width: 48px;}
+  .titulo h1 {font-size: 20px;}
+  .titulo .subtitulo {font-size: 16px;}
+  .linha {flex-direction: column;}
+}

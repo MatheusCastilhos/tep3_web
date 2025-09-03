@@ -1,0 +1,154 @@
+<!-- UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE - UFCSPA
+
+Nome: Matheus Castilhos
+Disciplina: Tópicos Especiais de Programação III
+Curso: Informática Biomédica
+Atividade Prática 1
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dr. Sauro - Agendamentos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="titulo">
+            <img src="imagens/psicologia.png" alt="Ícone psicologia" class="icone">
+            <div class="textos">
+                <h1>Clínica de Psicologia</h1>
+                <p class="subtitulo">Dr. Dino da Silva Sauro</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="conteudo">
+        <section class="layout">
+            <!-- Coluna esquerda -->
+            <div class="coluna-esquerda">
+                <!-- Apresentação -->
+                <div id="sobre" class="apresentacao">
+                    <h2>Olá, seja bem-vindo(a)!</h2>
+                    <p>Sistema de agendamento de consultas. Atendimento psicológico presencial e online, com foco em ansiedade, depressão e desenvolvimento pessoal.</p>
+                    <p>Precisa de ajuda <strong>imediata</strong>? Ligue 188 ou acesse o
+                        <a href="https://www.cvv.org.br/" target="_blank" rel="noopener">site do CVV</a>.
+                    </p>
+                </div>
+
+                <!-- Consulta de Agendamentos -->
+                <section id="consultar" class="formulario">
+                    <h2>Consultar Agendamentos</h2>
+                    <form method="get" action="">
+                        <!-- CPF -->
+                        <div class="grupo">
+                            <label for="cpf_busca">CPF</label>
+                            <input type="text" id="cpf_busca" name="cpf" placeholder="Somente números">
+                        </div>
+
+                        <!-- Data -->
+                        <div class="grupo">
+                            <label for="data_busca">Data</label>
+                            <input type="date" id="data_busca" name="data">
+                        </div>
+
+                        <!-- Botão -->
+                        <button type="submit" class="btn">Buscar</button>
+                    </form>
+                </section>
+
+            </div>
+
+            <!-- Coluna direita -->
+            <div class="coluna-direita">
+
+                <!-- Formulário de Agendamento -->
+                <section id="agendar" class="formulario">
+                    <h2>Agendar Consulta</h2>
+                    <form method="post" action="">
+
+                        <!-- Nome completo -->
+                        <div class="grupo">
+                            <label for="nome">Nome completo</label>
+                            <input type="text" id="nome" name="nome" placeholder="Ex.: Matheus Castilhos">
+                        </div>
+
+                        <!-- E-mail -->
+                        <div class="grupo">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="exemplo@email.com">
+                        </div>
+
+                        <!-- CPF -->
+                        <div class="grupo">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" name="cpf" placeholder="Somente números">
+                        </div>
+
+                        <div class="linha">
+
+                            <!-- Data da consulta -->
+                            <div class="grupo">
+                                <label for="data">Data da consulta</label>
+                                <input type="date" id="data" name="data">
+                            </div>
+
+                            <!-- Horário -->
+                            <div class="grupo">
+                                <label for="hora">Horário</label>
+                                <input type="time" id="hora" name="hora">
+                            </div>
+                        </div>
+
+                        <div class="linha">
+                            <!-- Plano de saúde -->
+                            <div class="grupo">
+                                <label for="plano">Plano de saúde</label>
+                                <select id="plano" name="plano">
+                                <option value="">Selecione...</option>
+                                <option>Particular</option>
+                                <option>Unimed</option>
+                                <option>IPÊ</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Modalidade -->
+                            <div class="grupo">
+                                <label for ="modalidade">Modalidade</label>
+                                <label><input type="radio" name="modalidade" value="presencial"> Presencial</label>
+                                <label><input type="radio" name="modalidade" value="online"> Online</label>
+                            </div>
+                        </div>
+
+                        <!-- Motivo/Queixa principal -->
+                        <div class="grupo">
+                            <label for="queixa">Motivo/Queixa principal</label>
+                            <textarea id="queixa" name="queixa" rows="4" placeholder="Descreva brevemente o motivo..."></textarea>
+                        </div>
+
+                        <!-- Consentimento -->
+                        <div class="grupo">
+                            <label><input type="checkbox" name="consentimento"> Confirmo que as informações são verdadeiras.</label>
+                        </div>
+
+                        <!-- Botão -->
+                        <button type="submit" class="btn">Enviar agendamento</button>
+                    </form>
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="rodape">
+        <small>© 2025 Clínica de Psicologia — Dr. Dino Sauro • Porto Alegre/RS</small>
+    </footer>
+
+</body>
+</html>
