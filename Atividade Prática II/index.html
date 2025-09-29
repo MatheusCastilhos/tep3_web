@@ -1,0 +1,271 @@
+<!-- UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE - UFCSPA
+Nome: Matheus Castilhos
+Disciplina: Tópicos Especiais de Programação III
+Curso: Informática Biomédica
+Atividade Prática 2
+-->
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel de Dados da COVID-19</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Chart.js  -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <!-- Overlay de carregamento  -->
+  <style>
+    #countryLoading {
+      position: fixed; inset: 0; z-index: 1050;
+      background: rgba(248,249,250,.92);
+      display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+    #countryLoading .loader {
+      display: flex; flex-direction: column; align-items: center; gap: .75rem;
+    }
+  </style>
+  <div id="countryLoading" aria-live="polite" aria-busy="true">
+    <div class="loader text-center">
+      <div class="spinner-border" role="status" aria-label="Carregando"></div>
+      <div class="mt-2">Carregando dados do país...</div>
+    </div>
+  </div>
+
+
+  <body class="bg-light">
+    <div class="container py-4">
+
+      <!-- Cabeçalho -->
+      <header class="mb-3 text-center">
+        <h1 class="h3 mb-1">Painel de Dados da COVID-19</h1>
+        <div class="text-muted">feito por <strong>Matheus Castilhos</strong></div>
+      </header>
+      <hr class="mt-2 mb-3 border-secondary-subtle">
+
+      <!-- Área de alertas -->
+      <div id="alertArea" class="mb-3"></div>
+
+      <!-- ====== VIEW 1: BOAS-VINDAS ====== -->
+      <section id="welcomeView" class="py-5">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-8">
+            <div class="card shadow-sm">
+              <div class="card-body p-4 text-center">
+                <h2 class="h4 mb-3">Bem-vindo ao Painel de Dados da COVID-19</h2>
+                <p class="text-muted mb-3">
+                    Este painel consolida informações públicas sobre COVID-19 por <strong>país</strong> e por <strong>língua</strong>, usando dados em tempo real das APIs <em>disease.sh</em> e <em>RestCountries</em>. Ele foi desenvolvido para praticar consumo de APIs, organização de dados e visualização interativa.
+                </p>
+
+                <ul class="text-start small mb-4">
+                    <li><strong>Ranking de países:</strong> mostra, para cada país, <em>Vacinação (%)</em> e <em>Mortes (%)</em>. É possível <u>ordenar</u> por métrica e direção, <u>paginar</u> os resultados e <u>buscar</u> pelo nome do país.</li>
+                    <li><strong>Ranking por língua:</strong> agrega países por línguas oficiais, exibindo <em>Vacinação (%)</em>, <em>Mortes (%)</em>, <em>População total</em> e <em>número de países</em>, com ordenação e paginação.</li>
+                    <li><strong>Detalhe do país:</strong> ao clicar num país, abre-se uma tela dedicada com bandeira, população, línguas e três gráficos: histórico de <em>casos/dia</em> e <em>óbitos/dia</em>, evolução de <em>vacinação acumulada</em> e a distribuição atual entre <em>ativos</em>, <em>recuperados</em> e <em>óbitos</em>.</li>
+                    <li><strong>Observação sobre Vacinação (%):</strong> o valor usa <em>doses aplicadas ÷ população</em>. Por considerar múltiplas doses por pessoa, o percentual pode ultrapassar 100%.</li>
+                    <li><strong>Acessibilidade e UX:</strong> indicadores de carregamento, mensagens de erro e navegação sem recarregar a página (SPA) para uma experiência fluida.</li>
+                    <li><strong>Limitações de dados:</strong> alguns países carecem de campos ou séries históricas completas nas APIs. Nessas situações, certos cartões ou gráficos podem não aparecer e a página de detalhes pode não carregar como esperado. O painel exibe mensagens de erro e mantém a navegação estável.</li>
+                    <li><strong>Fontes:</strong> disease.sh (COVID-19) e RestCountries (metadados de países e línguas).</li>
+                </ul>
+
+                <p class="text-muted mb-4">
+                Para começar, clique no botão abaixo. O painel irá buscar os dados mais recentes, montar os rankings e habilitar a navegação para os detalhes por país.
+                </p>
+
+                <div class="d-flex flex-column align-items-center gap-2">
+                  <button id="btnGerar" class="btn btn-primary btn-lg">
+                    <span id="spinBtn" class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+                    <span id="btnLabel">Gerar ranking</span>
+                  </button>
+                  <small id="status" class="text-secondary"></small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== VIEW 2: DASHBOARD ====== -->
+      <section id="dashboardView" class="d-none">
+        <div class="row g-4">
+          <!-- RANKING DE PAÍSES -->
+          <div class="col-12 col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header d-flex flex-wrap align-items-center gap-3">
+                <span>Ranking de países</span>
+                <span id="badgeTotalPaises" class="badge text-bg-secondary d-none"></span>
+
+                <!-- Controles à direita -->
+                <div class="ms-auto d-flex flex-wrap align-items-center gap-2">
+                  <!-- Busca por nome do país -->
+                  <div class="input-group input-group-sm" style="width: 220px;">
+                    <span class="input-group-text" id="lblBuscaPais">🔎</span>
+                    <input
+                      id="buscaPais"
+                      type="search"
+                      class="form-control"
+                      placeholder="Buscar país..."
+                      aria-label="Buscar país"
+                      aria-describedby="lblBuscaPais"
+                    />
+                  </div>
+
+                  <!-- Ordenação -->
+                  <select id="ordenarPor" class="form-select form-select-sm" style="width:auto;">
+                    <option value="pctVac" selected>Vacinação (%)</option>
+                    <option value="pctMortes">Mortes (%)</option>
+                  </select>
+                  <select id="direcao" class="form-select form-select-sm" style="width:auto;">
+                    <option value="desc" selected>Maior → Menor</option>
+                    <option value="asc">Menor → Maior</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped align-middle mb-0" id="tabelaRanking">
+                    <thead class="table-light">
+                      <tr>
+                        <th style="width:60px;">#</th>
+                        <th>País <small class="text-muted">(clique para ver detalhes)</small></th>
+                        <th class="text-end">Vacinação (%)</th>
+                        <th class="text-end">Mortes (%)</th>
+                      </tr>
+                    </thead>
+                    <tbody><!-- Linhas via JS --></tbody>
+                  </table>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+                  <small id="paginaInfo" class="text-muted"></small>
+                  <nav class="d-flex justify-content-center">
+                    <ul id="paginacaoPaises" class="pagination pagination-sm mb-0"></ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RANKING POR LÍNGUA -->
+          <div class="col-12 col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header d-flex flex-wrap align-items-center gap-3">
+                <span>Ranking por Língua</span>
+                <span id="badgeTotalLinguas" class="badge text-bg-secondary d-none"></span>
+                <div class="ms-auto d-flex flex-wrap align-items-center gap-2">
+                  <select id="ordenarPorLingua" class="form-select form-select-sm" style="width:auto;">
+                    <option value="pctVac" selected>Vacinação (%)</option>
+                    <option value="pctMortes">Mortes (%)</option>
+                    <option value="populacao">População total</option>
+                  </select>
+                  <select id="direcaoLingua" class="form-select form-select-sm" style="width:auto;">
+                    <option value="desc" selected>Maior → Menor</option>
+                    <option value="asc">Menor → Maior</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped align-middle mb-0" id="tabelaLingua">
+                    <thead class="table-light">
+                      <tr>
+                        <th style="width:60px;">#</th>
+                        <th>Língua</th>
+                        <th class="text-end">Vacinação (%)</th>
+                        <th class="text-end">Mortes (%)</th>
+                        <th class="text-end">População total</th>
+                        <th class="text-end">Países (contagem)</th>
+                      </tr>
+                    </thead>
+                    <tbody><!-- Linhas via JS --></tbody>
+                  </table>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+                  <small id="paginaInfoLingua" class="text-muted"></small>
+                  <nav class="d-flex justify-content-center">
+                    <ul id="paginacaoLinguas" class="pagination pagination-sm mb-0"></ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== VIEW 3: DETALHE POR PAÍS ====== -->
+      <section id="countryView" class="container py-4 d-none">
+        <header class="mb-3 d-flex align-items-center gap-3">
+          <img id="cty-flag" alt="Bandeira" width="48" height="32" style="object-fit:cover;border:1px solid #ddd;border-radius:4px;">
+          <div>
+            <h2 id="cty-title" class="h4 mb-0">País</h2>
+            <small id="cty-sub" class="text-muted">Região • População • Línguas</small>
+          </div>
+          <button id="btnBack" class="btn btn-outline-secondary ms-auto" type="button" aria-label="Voltar ao dashboard">
+            ← Voltar
+          </button>
+        </header>
+
+        <!-- Cards de números atuais -->
+        <div class="row g-3 mb-3" id="cty-stats">
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row g-4">
+          <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Casos e Óbitos (histórico)</h5>
+                <div style="height:300px">
+                  <canvas id="chart-history" aria-label="Histórico de casos e óbitos" role="img"></canvas>
+                </div>
+                <small class="text-muted">Fonte: disease.sh (dados históricos)</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Vacinação (acumulado)</h5>
+                <div style="height:300px">
+                  <canvas id="chart-vax" aria-label="Vacinação acumulada" role="img"></canvas>
+                </div>
+                <small class="text-muted">Cobertura de vacinação ao longo do tempo</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Situação Atual</h5>
+                <div style="height:300px">
+                  <canvas id="chart-pie" aria-label="Distribuição atual" role="img"></canvas>
+                </div>
+                <small class="text-muted">Ativos × Recuperados × Óbitos</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="cty-status" class="mt-3 text-muted"></div>
+      </section>
+
+      <!-- Rodapé opcional -->
+      <footer class="mt-4 text-center text-muted small">Atualizado dinamicamente via APIs disease.sh e RestCountries | UFCSPA 2025</footer>
+    </div>
+
+    <!-- Bootstrap JS (bundle) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
