@@ -1,0 +1,61 @@
+<html>
+
+<body>
+
+<h1>Informações</h1>
+<p id="Infos">Sem informações</p>
+
+<script>
+let inst = [
+		{sigla: "UFCSPA",
+		nome: "Universidade Federal de Ciências da Saúde de Porto Alegre",
+		cidade: "Porto Alegre",
+		estado: "RS",
+		qtd_alunos: "3000"}, 
+		{sigla: "UFRGS",
+		nome: "Universidade Federal do Rio Grande do Sul",
+		cidade: "Porto Alegre",
+		estado: "RS",
+		qtd_alunos: "40000"},
+		{sigla: "UFPEL",
+		nome: "Universidade Federal de Pelotas",
+		cidade: "Pelotas",
+		estado: "RS",
+		qtd_alunos: "20000"},  
+];
+
+let valor = prompt("Qual instituição (sigla)?");
+
+for (elemento in inst) {
+	if(inst[elemento].sigla == valor) {
+		resultado = inst[elemento];
+	}
+}
+
+/* // Usando um for clássico
+for (let i = 0; i < inst.length; i++) {
+	if (inst[i].sigla == valor) {
+		resultado = inst[i];
+		break;
+	}
+}
+*/
+
+/* // Usando a função find()
+let resultado = instituicoes.find(function(inst) {
+	return inst.sigla.toUpperCase() === valor;
+});
+*/	
+
+let nome_completo = resultado.nome + " - " + resultado.sigla;
+console.log(nome_completo);
+
+document.getElementById("Infos").innerHTML = "A " + nome_completo + " possui cerca de " + resultado.qtd_alunos + " e está situada em " + resultado.cidade + "/" + resultado.estado;
+
+</script>
+
+</body>
+
+</html>
+
+

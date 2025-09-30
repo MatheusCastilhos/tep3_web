@@ -1,0 +1,31 @@
+<html>
+
+<body>
+
+<h1>Informações</h1>
+<h2 id="nome"></h2>
+<p id="Infos"></p>
+
+<script>
+let instituição = {
+		sigla: "UFCSPA",
+		nome: "Universidade Federal de Ciências da Saúde de Porto Alegre",
+		cidade: "Porto Alegre",
+		estado: "RS",
+		qtd_alunos: "3000"
+};
+
+nome_completo = instituição.nome + " - " + instituição.sigla;
+console.log(nome_completo);
+ 
+let valor = prompt("Qual o seu nome?");
+
+document.getElementById("nome").innerHTML = "Olá, " + valor + "!";
+document.getElementById("Infos").innerHTML = "A " + nome_completo + " possui cerca de " + instituição.qtd_alunos + " e está situada em " + instituição.cidade + "/" + instituição.estado;
+</script>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,47 @@
+<html>
+
+<body>
+<button onclick="alert(window.innerWidth)">Largura da janela</button>
+<button onclick="alert(navigator.userAgent)">Navegador</button>
+<button onclick="alert(screen.width)">Resolução</button>
+<button onclick="alert(history.length)">Histórico</button>
+<button onclick="history.back()">Voltar</button>
+<button onclick="location.href='https://www.google.com'">Ir para Google</button>
+</body>
+
+</html>
+
+<script>
+// Mostrar largura e altura da janela
+console.log("Largura da janela: " + window.innerWidth);
+console.log("Altura da janela: " + window.innerHeight);
+
+// Abrir nova janela ou aba
+// window.open("https://www.google.com", "_blank", "width=600,height=400");
+
+// Fechar a janela atual (só funciona se ela tiver sido aberta por script)
+// window.close();
+
+console.log("Nome do navegador: " + navigator.appName);
+console.log("Versão do navegador: " + navigator.appVersion);
+console.log("User Agent: " + navigator.userAgent);
+console.log("Plataforma: " + navigator.platform);
+console.log("Largura da tela: " + screen.width);
+console.log("Altura da tela: " + screen.height);
+console.log("Profundidade de cores: " + screen.colorDepth);
+// Voltar uma página
+// history.back();
+// Avançar uma página
+// history.forward();
+// Voltar duas páginas
+// history.go(-2);
+// Ver tamanho do histórico
+console.log("Número de páginas no histórico: " + history.length);
+console.log("URL atual: " + location.href);
+console.log("Hostname: " + location.hostname);
+console.log("Protocolo: " + location.protocol);
+// Redirecionar para outra página
+// location.href = "https://www.google.com";
+// Recarregar a página atual
+// location.reload();
+</script>

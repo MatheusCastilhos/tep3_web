@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ranking COVID-19 — País e Língua (simples)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+
+<body class="bg-light">
+  <div class="container py-4">
+    <h1 class="h4 mb-3">COVID-19 — Rankings por País e por Língua</h1>
+    <p class="text-muted">Clique para buscar os dados e gerar os rankings dinamicamente.</p>
+    <button id="btn" class="btn btn-primary mb-4">Gerar ranking</button>
+    <span id="status" class="ms-2"></span>
+
+    <div class="row g-4">
+      <div class="col-12 col-xl-6">
+        <h2 class="h6">País — Vacinação (doses por 100 hab.)</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th><th>País</th><th>ISO3</th>
+                <th class="text-end">Doses/100</th>
+                <th class="text-end">Doses totais</th>
+                <th class="text-end">População</th>
+              </tr>
+            </thead>
+            <tbody id="vaccCountry"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <h2 class="h6">País — Mortes (% da população)</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th><th>País</th><th>ISO3</th>
+                <th class="text-end">% Mortes</th>
+                <th class="text-end">Mortes</th>
+                <th class="text-end">População</th>
+              </tr>
+            </thead>
+            <tbody id="deathCountry"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <h2 class="h6">Língua — Vacinação (ponderado pela população)</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th><th>Língua</th>
+                <th class="text-end">Países</th>
+                <th class="text-end">População</th>
+                <th class="text-end">Doses/100</th>
+                <th class="text-end">Doses totais</th>
+              </tr>
+            </thead>
+            <tbody id="vaccLang"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <h2 class="h6">Língua — Mortes (ponderado pela população)</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead>
+              <tr>
+                <th>#</th><th>Língua</th>
+                <th class="text-end">Países</th>
+                <th class="text-end">População</th>
+                <th class="text-end">% Mortes</th>
+                <th class="text-end">Mortes</th>
+              </tr>
+            </thead>
+            <tbody id="deathLang"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-3 text-muted small">
+      Fontes: disease.sh (COVID-19) • restcountries.com (línguas).<br/>
+      Vacinação = <em>doses aplicadas</em> por 100 habitantes.
+    </p>
+  </div>
+
+  
+  <script>
+    const btn = document.getElementById('btn');
+    const statusEl = document.getElementById('status');
+    const elVaccCountry = document.getElementById('vaccCountry');
+    const elDeathCountry = document.getElementById('deathCountry');
+    const elVaccLang = document.getElementById('vaccLang');
+    const elDeathLang = document.getElementById('deathLang');
+
+    btn.addEventListener('click', run);
+
+    async function run() {
+      statusEl.textContent = 'Carregando...';
+      clearTables();
+
+      try {
+        // Checagem explícita de status HTTP
+        const [countries, vaxRaw, rcAll] = await Promise.all([
+          fetchJson('https://disease.sh/v3/covid-19/countries?allowNull=true', 'countries'),
+          fetchJson('https://disease.sh/v3/covid-19/vaccine/coverage/countries?lastdays=1&fullData=false', 'vaccine coverage'),
+          fetchJson('https://restcountries.com/v3.1/all?fields=cca3,languages', 'restcountries')
+        ]);
+
+        // país(lower) -> doses totais (último valor)
+        const dosesByCountry = {};
+        (vaxRaw || []).forEach(item => {
+          const name = (item.country || '').toLowerCase();
+          const timeline = item.timeline || {};
+          const vals = Object.values(timeline);
+          if (name && vals.length) {
+            const last = Number(vals[vals.length - 1]);
+            if (Number.isFinite(last)) dosesByCountry[name] = last;
+          }
+        });
+
+        // ISO3 -> [línguas]
+        const langsByISO3 = {};
+        (rcAll || []).forEach(c => {
+          const iso3 = (c.cca3 || '').toUpperCase();
+          const langs = c.languages ? Object.values(c.languages) : [];
+          if (iso3) langsByISO3[iso3] = langs;
+        });
+
+        // Linhas por país
+        const rows = [];
+        (countries || []).forEach(c => {
+          const name = String(c.country || '');
+          const iso3 = String(c.countryInfo?.iso3 || '').toUpperCase();
+          const pop = Number(c.population) || 0;
+          const deaths = Number(c.deaths) || 0;
+          if (!name || !pop) return;
+
+          const dosesTotal = dosesByCountry[name.toLowerCase()];
+          const dosesPer100 = (Number.isFinite(dosesTotal) && pop > 0) ? (dosesTotal / pop) * 100 : null;
+          const deathPct = pop > 0 ? (deaths / pop) * 100 : 0;
+
+          rows.push({
+            name, iso3, pop, deaths, deathPct,
+            totalDoses: Number.isFinite(dosesTotal) ? dosesTotal : null,
+            dosesPer100,
+            languages: langsByISO3[iso3] || []
+          });
+        });
+
+        const byVacc = rows.filter(r => r.dosesPer100 != null)
+                           .sort((a,b) => b.dosesPer100 - a.dosesPer100)
+                           .slice(0, 10);
+        const byDeath = rows.slice()
+                            .sort((a,b) => b.deathPct - a.deathPct)
+                            .slice(0, 10);
+        renderCountryTable(elVaccCountry, byVacc, true);
+        renderCountryTable(elDeathCountry, byDeath, false);
+
+        const agg = {};
+        rows.forEach(r => {
+          const langs = r.languages.length ? r.languages : ['(Sem língua mapeada)'];
+          langs.forEach(L => {
+            if (!agg[L]) agg[L] = { countries: new Set(), pop: 0, deaths: 0, doses: 0 };
+            agg[L].countries.add(r.name);
+            agg[L].pop += r.pop;
+            agg[L].deaths += r.deaths;
+            if (r.totalDoses != null) agg[L].doses += r.totalDoses;
+          });
+        });
+
+        const langRows = Object.entries(agg).map(([lang, a]) => ({
+          lang,
+          countries: a.countries.size,
+          pop: a.pop,
+          deaths: a.deaths,
+          totalDoses: a.doses,
+          dosesPer100: a.pop ? (a.doses / a.pop) * 100 : 0,
+          deathPct: a.pop ? (a.deaths / a.pop) * 100 : 0
+        }));
+
+        const langByVacc = langRows.slice().sort((a,b) => b.dosesPer100 - a.dosesPer100).slice(0, 10);
+        const langByDeath = langRows.slice().sort((a,b) => b.deathPct - a.deathPct).slice(0, 10);
+        renderLangTable(elVaccLang, langByVacc, true);
+        renderLangTable(elDeathLang, langByDeath, false);
+
+        statusEl.textContent = 'Pronto ✅';
+      } catch (e) {
+        console.error(e);
+        statusEl.textContent = 'Erro ao carregar.';
+        alert('Falha ao buscar ou processar os dados.\n' + (e.message || e));
+      }
+    }
+
+    // --------- helpers bem simples ---------
+    async function fetchJson(url, label){
+      const r = await fetch(url);
+      if (!r.ok) {
+        throw new Error(`Falha em ${label}: HTTP ${r.status}`);
+      }
+      return r.json();
+    }
+
+    function clearTables() {
+      elVaccCountry.innerHTML = '';
+      elDeathCountry.innerHTML = '';
+      elVaccLang.innerHTML = '';
+      elDeathLang.innerHTML = '';
+    }
+
+    function renderCountryTable(tbody, rows, isVacc) {
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td>${esc(r.name)}</td>
+          <td>${r.iso3 || '-'}</td>
+          <td class="text-end">${num(isVacc ? r.dosesPer100 : r.deathPct)}</td>
+          <td class="text-end">${num(isVacc ? r.totalDoses : r.deaths)}</td>
+          <td class="text-end">${num(r.pop)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderLangTable(tbody, rows, isVacc) {
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td>${esc(r.lang)}</td>
+          <td class="text-end">${r.countries}</td>
+          <td class="text-end">${num(r.pop)}</td>
+          <td class="text-end">${num(isVacc ? r.dosesPer100 : r.deathPct)}</td>
+          <td class="text-end">${num(isVacc ? r.totalDoses : r.deaths)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function num(v){
+      if (!Number.isFinite(v)) return '-';
+      return v.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+    }
+
+    function esc(s){
+      return (s ?? '').toString()
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
+    }
+  </script>
+</body>
+</html>
