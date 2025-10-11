@@ -1,0 +1,215 @@
+/* ===========================================================
+   UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE
+   CURSO DE INFORMÁTICA BIOMÉDICA | Tópicos Especiais III
+   Estilo base da aplicação "Acompanhamento de Vacinação Infantil"
+   =========================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f5f9fc;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* === TOPO === */
+.topbar {
+  background: linear-gradient(135deg, #00a2b8, #42c3a7);
+  color: #fff;
+  padding: 20px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.topbar h1 {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.nav {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* === CONTEÚDO === */
+main {
+  flex: 1;
+  padding: 32px 16px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  color: #007c89;
+  margin-bottom: 10px;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* === BOTÕES === */
+.btn,
+button.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  background-color: #00a2b8;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn:hover,
+button.btn:hover {
+  background-color: #00879b;
+}
+
+.btn.secondary {
+  background-color: #e5e9ec;
+  color: #333;
+}
+
+.btn.secondary:hover {
+  background-color: #d5d9dc;
+}
+
+/* === TABELAS === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+  background-color: #f0f5f7;
+  font-weight: 600;
+}
+
+tr:hover td {
+  background-color: #fafcfd;
+}
+
+/* === FORMULÁRIOS === */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+label {
+  font-weight: 600;
+  color: #0d6b75;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.form-control,
+select,
+select#filtro {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.form-control:focus,
+select:focus {
+  border-color: #00a2b8;
+  box-shadow: 0 0 0 3px rgba(0, 162, 184, 0.15);
+  outline: none;
+}
+
+/* === RODAPÉ === */
+.footer {
+  background: #f0f5f7;
+  padding: 16px 0;
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 700px) {
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+}

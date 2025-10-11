@@ -1,0 +1,66 @@
+# ==============================
+# Arquivos do Windows Explorer
+# ==============================
+desktop.ini
+Thumbs.db
+ehthumbs.db
+
+# ==============================
+# Caches de sistema e IDEs
+# ==============================
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# ==============================
+# Arquivos temporários e de build
+# ==============================
+*.tmp
+*.bak
+*.swp
+*.swo
+*.old
+
+# ==============================
+# Composer
+# ==============================
+vendor/
+
+# ==============================
+# Ambiente e configuração local
+# ==============================
+.env
+.env.local
+.env.*
+!.env.example
+
+# ==============================
+# Banco de dados / backups
+# ==============================
+*.sql
+*.sqlite
+*.db
+dump.sql
+
+# ==============================
+# Arquivos de cache do PHP
+# ==============================
+*.cache
+*.opcache
+*.php~*
+*.php.swp
+
+# ==============================
+# Arquivos do servidor local
+# ==============================
+.phpunit.result.cache
+coverage/
+phpunit.xml
+phpunit.xml.dist
+
+# ==============================
+# Sistema de uploads ou temporários
+# ==============================
+uploads/
+tmp/
