@@ -6,7 +6,10 @@
   NOMES: CARLISE SEBASTIANY E MATHEUS CASTILHOS
 */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoload = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoload)) {
+  require_once $autoload; // usa Composer se existir
+}
 require_once __DIR__ . '/../config/config.php';
 
 /* --- Importa o calendário vacinal do professor de forma silenciosa --- */

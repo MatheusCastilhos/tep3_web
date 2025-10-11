@@ -79,6 +79,13 @@ php -v
 
 ------------------------------------------------------------------------
 
+## Aviso:
+
+**Se não quiser fazer a instalação de composer para usar o .env, pasta adicionar as informações da conexão
+com o banco de dados no arquivo `config.php` e pular os passos 2, 3 e 5.**
+
+------------------------------------------------------------------------
+
 ### 2️⃣ Instalar o Composer globalmente
 
 Baixe em [getcomposer.org/download](https://getcomposer.org/download/).\
@@ -192,24 +199,13 @@ unificados com `.form-control` e botões responsivos.
 
 ## 🛠️ Erros Comuns e Soluções
 
-  --------------------------------------------------------------------------------------------------------
-  Erro                                          Causa Provável                      Solução
-  --------------------------------------------- ----------------------------------- ----------------------
-  `could not find driver`                       Extensão `pdo_mysql` desativada     Ativar no `php.ini`
-
-  `Unable to find the wrapper "https"`          `openssl` desativado                Ativar
-                                                                                    `extension=openssl`
-
-  `Access denied for user 'ODBC'@'localhost'`   Login MySQL incorreto               Use `mysql -u root -p`
-                                                                                    e confira senha
-
-  Página em branco                              Erro de sintaxe PHP                 Rode
-                                                                                    `php -l arquivo.php`
-
-  `.env` não lido                               Falta da pasta `vendor/`            Execute
-                                                                                    `composer install`
-                                                                                    novamente
-  --------------------------------------------------------------------------------------------------------
+| Erro | Causa Provável | Solução |
+|------|----------------|----------|
+| `could not find driver` | Extensão `pdo_mysql` desativada | Ativar no `php.ini` |
+| `Unable to find the wrapper "https"` | `openssl` desativado | Ativar `extension=openssl` |
+| `Access denied for user 'ODBC'@'localhost'` | Login MySQL incorreto | Use `mysql -u root -p` e confira a senha |
+| Página em branco | Erro de sintaxe PHP | Rode `php -l arquivo.php` |
+| `.env` não lido | Falta da pasta `vendor/` | Execute `composer install` novamente |
 
 ------------------------------------------------------------------------
 
@@ -227,7 +223,7 @@ unificados com `.form-control` e botões responsivos.
 **Carlise Sebastiany**\
 **Matheus Castilhos**
 
-**Universidade Federal de Ciências da Saúde de Porto Alegre -- UFCSPA**\
+**Universidade Federal de Ciências da Saúde de Porto Alegre - UFCSPA**\
 **Curso:** Informática Biomédica \| 2025/2
 
 ------------------------------------------------------------------------
