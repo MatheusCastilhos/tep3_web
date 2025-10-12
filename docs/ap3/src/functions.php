@@ -3,32 +3,54 @@
   UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE
   CURSO DE INFORMÁTICA BIOMÉDICA
   DISCIPLINA DE TÓPICOS ESPECIAIS EM INFORMÁTICA BIOMÉDICA III
-  NOMES: CARLISE SEBASTIANY E MATHEUS CASTILHOS
+  NOMES: CARLISE VR SEBASTIANY E MATHEUS CASTILHOS
 */
 
+// Autoload (Composer opcional)
 $autoload = __DIR__ . '/../vendor/autoload.php';
 if (file_exists($autoload)) {
-  require_once $autoload; // usa Composer se existir
+  require_once $autoload;
 }
+
+// Configuração de conexão (PDO)
 require_once __DIR__ . '/../config/config.php';
 
-/* --- Importa o calendário vacinal do professor de forma silenciosa --- */
-global $calendario; // mesmo nome usado no arquivo do professor
-$calendario = [];   // inicializa
+function is_logged_in(): bool {
+  return !empty($_SESSION['user'] ?? null);
+}
+
+function login_user(string $username): void {
+  $_SESSION['user'] = $username;
+}
+
+function logout_user(): void {
+  unset($_SESSION['user']);
+}
+
+function ensure_auth(): void {
+  if (!is_logged_in()) {
+    $current = $_SERVER['REQUEST_URI'] ?? 'index.php';
+    header("Location: index.php?p=login&redirect=" . urlencode($current));
+    exit;
+  }
+}
+
+
+global $calendario;
+$calendario = [];
 
 ob_start();
-include __DIR__ . '/../config/calendario_vacinal.php';
-ob_end_clean(); // limpa a saída do arquivo (que contém echos e prints)
+@include __DIR__ . '/../config/calendario_vacinal.php';
+ob_end_clean();
 
-/* Verifica se o calendário foi carregado corretamente */
-if (empty($calendario) && (isset($_GET['p']) && $_GET['p'] === 'atrasos')) {
+// Aviso amigável caso o calendário não seja carregado
+if (empty($calendario) && ($_GET['p'] ?? '') === 'atrasos') {
   echo '<div class="card" style="color:#b00;background:#fff3f3;padding:10px;border-radius:8px;">
-        Calendário vacinal não encontrado ou incompatível. 
-        Verifique <code>config/calendario_vacinal.php</code>.
+          Calendário vacinal não encontrado ou incompatível. 
+          Verifique <code>config/calendario_vacinal.php</code>.
         </div>';
 }
 
-/* --- Função de idade em meses (fallback caso o professor não tenha incluído) --- */
 if (!function_exists('idade_em_meses')) {
   function idade_em_meses(string $data_nasc, ?string $base = null): int {
     $n = new DateTime($data_nasc);
@@ -38,19 +60,17 @@ if (!function_exists('idade_em_meses')) {
   }
 }
 
-/* --- Busca todas as vacinações registradas de um paciente --- */
 function get_aplicacoes_por_paciente(PDO $pdo, int $paciente_id): array {
   $st = $pdo->prepare("
-    SELECT vacina, data_aplicacao 
-    FROM vacinacoes 
-    WHERE paciente_id = ? 
+    SELECT vacina, data_aplicacao
+    FROM vacinacoes
+    WHERE paciente_id = ?
     ORDER BY data_aplicacao
   ");
   $st->execute([$paciente_id]);
   return $st->fetchAll();
 }
 
-/* --- Compara doses esperadas (até a idade atual) com doses aplicadas --- */
 function calcular_atrasos_paciente(array $calendario, array $aplicacoes, int $idade_meses): array {
   // Conta quantas doses já foram aplicadas por tipo de vacina
   $aplicadas = [];
@@ -63,17 +83,16 @@ function calcular_atrasos_paciente(array $calendario, array $aplicacoes, int $id
 
   // Percorre cada vacina do calendário oficial
   foreach ($calendario as $vacina => $regras) {
-    // Exemplo de estrutura: [ ["dose"=>1,"idade_max"=>2], ["dose"=>2,"idade_max"=>4], ... ]
     $deveriam = 0;
     foreach ($regras as $r) {
       if ($idade_meses >= $r['idade_max']) {
-        $deveriam++; // já atingiu a idade para essa dose
+        $deveriam++;
       }
     }
 
     $feitas = $aplicadas[$vacina] ?? 0;
 
-    // Se fez menos do que deveria, registra o atraso
+    // Registra se estiver em atraso
     if ($feitas < $deveriam) {
       $faltas[$vacina] = [
         'deveriam' => $deveriam,

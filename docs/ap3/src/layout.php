@@ -3,10 +3,15 @@
   UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE
   CURSO DE INFORMÁTICA BIOMÉDICA
   DISCIPLINA DE TÓPICOS ESPECIAIS EM INFORMÁTICA BIOMÉDICA III
-  NOMES: CARLISE SEBASTIANY E MATHEUS CASTILHOS
+  NOMES: CARLISE VR SEBASTIANY E MATHEUS CASTILHOS
 */
 
-function page_header($title = 'Vacinação Infantil – AP3') { ?>
+// Garante sessão iniciada
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+function page_header(string $title = 'Vacinação Infantil – AP3'): void { ?>
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -27,12 +32,25 @@ function page_header($title = 'Vacinação Infantil – AP3') { ?>
   <div class="container">
     <h1>Acompanhamento de Vacinação Infantil</h1>
     <p class="subtitle">Tópicos Especiais de Programação III | UFCSPA 2025/2</p>
+
     <nav class="nav">
       <a href="index.php">Início</a>
-      <a href="index.php?p=pacientes">Pacientes</a>
-      <a href="index.php?p=vacinacoes">Vacinações</a>
-      <a href="index.php?p=atrasos">Atrasos</a>
       <a href="index.php?p=estatisticas">Estatísticas</a>
+
+      <?php if (!empty($_SESSION['user'])): ?>
+        <a href="index.php?p=pacientes">Pacientes</a>
+        <a href="index.php?p=vacinacoes">Vacinações</a>
+        <a href="index.php?p=atrasos">Atrasos</a>
+
+        <span class="nav-user-info">
+          <span class="nav-user">
+            <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['user']) ?>
+          </span>
+          <a href="index.php?p=login&action=logout" class="nav-logout">Sair</a>
+        </span>
+      <?php else: ?>
+        <a href="index.php?p=login" class="nav-login">Entrar</a>
+      <?php endif; ?>
     </nav>
   </div>
 </header>
@@ -40,14 +58,14 @@ function page_header($title = 'Vacinação Infantil – AP3') { ?>
 <main class="container">
 <?php }
 
-function page_footer() { ?>
+function page_footer(): void { ?>
 </main>
 
 <footer class="footer">
   <div class="container">
-    <small>by Carlise Sebastiany and Matheus Castilhos</small>
+    <small>Desenvolvido por <strong>Carlise VR Sebastiany</strong> e <strong>Matheus Castilhos</strong></small>
   </div>
 </footer>
 </body>
 </html>
-<?php }
+<?php } ?>

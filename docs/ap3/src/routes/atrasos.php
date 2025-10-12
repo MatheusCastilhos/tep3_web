@@ -3,7 +3,7 @@
   UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE
   CURSO DE INFORMÁTICA BIOMÉDICA
   DISCIPLINA DE TÓPICOS ESPECIAIS EM INFORMÁTICA BIOMÉDICA III
-  NOMES: CARLISE SEBASTIANY E MATHEUS CASTILHOS
+  NOMES: CARLISE VR SEBASTIANY E MATHEUS CASTILHOS
 */
 
 require_once __DIR__ . '/../functions.php';
@@ -84,7 +84,4 @@ $filtro = $_GET['filtro'] ?? 'todos';
     </tbody>
   </table>
 
-  <p style="opacity:.8; margin-top:10px;">
-    Use os pacientes de controle do enunciado para validar — apenas três devem estar “Em dia”.
-  </p>
 </section>

@@ -1,9 +1,11 @@
-/* ===========================================================
-   UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE
-   CURSO DE INFORMÁTICA BIOMÉDICA | Tópicos Especiais III
-   Estilo base da aplicação "Acompanhamento de Vacinação Infantil"
-   =========================================================== */
+/*
+  UNIVERSIDADE FEDERAL DE CIÊNCIAS DA SAÚDE DE PORTO ALEGRE
+  CURSO DE INFORMÁTICA BIOMÉDICA
+  DISCIPLINA DE TÓPICOS ESPECIAIS EM INFORMÁTICA BIOMÉDICA III
+  NOMES: CARLISE VR SEBASTIANY E MATHEUS CASTILHOS
+*/
 
+/* === RESET BÁSICO === */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -26,7 +28,7 @@ body {
   padding: 16px;
 }
 
-/* === TOPO === */
+/* === TOPO / NAVBAR === */
 .topbar {
   background: linear-gradient(135deg, #00a2b8, #42c3a7);
   color: #fff;
@@ -49,6 +51,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  align-items: center;
 }
 
 .nav a {
@@ -58,11 +61,44 @@ body {
   background: rgba(255, 255, 255, 0.15);
   padding: 6px 14px;
   border-radius: 8px;
-  transition: background 0.2s;
+  transition: background 0.2s ease-in-out;
 }
 
 .nav a:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* === ITENS DE USUÁRIO (LOGIN / LOGOUT) === */
+.nav-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 16px;
+}
+
+.nav-user {
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.nav-logout,
+.nav-login {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease-in-out;
+}
+
+.nav-logout:hover,
+.nav-login:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* === CONTEÚDO === */
@@ -100,7 +136,7 @@ button.btn {
   border: none;
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .btn:hover,
@@ -115,6 +151,14 @@ button.btn:hover {
 
 .btn.secondary:hover {
   background-color: #d5d9dc;
+}
+
+.btn.fullwidth {
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #00a2b8;
+  font-size: 1rem;
 }
 
 /* === TABELAS === */
@@ -168,12 +212,42 @@ select#filtro {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
   background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-control:focus,
 select:focus {
+  border-color: #00a2b8;
+  box-shadow: 0 0 0 3px rgba(0, 162, 184, 0.15);
+  outline: none;
+}
+
+/* === LOGIN PAGE === */
+.login-form {
+  max-width: 360px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 28px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-form label {
+  font-weight: 600;
+  color: #007c89;
+  margin-bottom: 4px;
+}
+
+.login-form .form-control {
+  padding: 10px 12px;
+  font-size: 1rem;
+}
+
+.login-form .form-control:focus {
   border-color: #00a2b8;
   box-shadow: 0 0 0 3px rgba(0, 162, 184, 0.15);
   outline: none;
@@ -200,6 +274,11 @@ select:focus {
     text-align: center;
   }
 
+  .nav-user-info {
+    margin-top: 8px;
+    justify-content: center;
+  }
+
   .card {
     padding: 16px;
   }
@@ -212,4 +291,98 @@ select:focus {
   td {
     padding: 8px;
   }
+
+  .login-form {
+    width: 90%;
+    margin: 40px auto;
+  }
+}
+
+/* === HOME === */
+.home-intro {
+  text-align: left;
+}
+
+.home-intro .info-tip {
+  margin-top: 12px;
+  color: #444;
+}
+
+.login-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f0f5f7;
+  color: #007c89;
+  font-weight: 500;
+}
+
+.login-status i {
+  font-size: 1.3rem;
+}
+
+.link-login {
+  color: #007c89;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-login:hover {
+  text-decoration: underline;
+}
+
+/* === GRID PARA GRÁFICOS LADO A LADO === */
+.chart-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.chart-row .card.half {
+  flex: 1;
+  min-width: 400px;
+}
+
+/* Ajusta para telas menores */
+@media (max-width: 900px) {
+  .chart-row {
+    flex-direction: column;
+  }
+  .chart-row .card.half {
+    min-width: 100%;
+  }
+}
+
+/* === Paginação === */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.pagination a,
+.pagination span {
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #e5e9ec;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.pagination a:hover {
+  background: #00a2b8;
+  color: #fff;
+}
+
+.pagination .active {
+  background: #00a2b8;
+  color: #fff;
 }
